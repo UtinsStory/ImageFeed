@@ -150,7 +150,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				7D9CFA4328DDEE7F00D971A7 /* AppDelegate.swift in Sources */,
-				7D9CFA5728DDEF8900D971A7 /* ImagesListViewController.swift in Sources */,
 				7D9CFA4528DDEE7F00D971A7 /* SceneDelegate.swift in Sources */,
 				7D3DFB1628DDF696005A13F3 /* ImagesListViewController.swift in Sources */,
 				7D3DFB1528DDF696005A13F3 /* ImagesListCell.swift in Sources */,
@@ -300,7 +299,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = YDM65X7W86;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Image Feed/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -314,7 +313,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "ru.praktikum.Image-Feed";
+				PRODUCT_BUNDLE_IDENTIFIER = ru.praktikum.ImageFeed;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -329,7 +328,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = YDM65X7W86;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Image Feed/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -343,7 +342,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "ru.praktikum.Image-Feed";
+				PRODUCT_BUNDLE_IDENTIFIER = ru.praktikum.ImageFeed;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
