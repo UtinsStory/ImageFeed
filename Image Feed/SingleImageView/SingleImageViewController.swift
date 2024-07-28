@@ -12,13 +12,13 @@ final class SingleImageViewController: UIViewController {
         didSet {
             guard isViewLoaded, let image else { return }
             
-            ImageView.image = image
-            ImageView.frame.size = image.size
+            imageView.image = image
+            imageView.frame.size = image.size
             rescaleAndCenterImageInScrollView(image: image)
         }
     }
     
-    @IBOutlet private var ImageView: UIImageView!
+    @IBOutlet private var imageView: UIImageView!
     
     @IBOutlet private var scrollView: UIScrollView!
     
@@ -59,9 +59,9 @@ final class SingleImageViewController: UIViewController {
         super.viewDidLoad()
         
         guard let image else { return }
-        ImageView.image = image
+        imageView.image = image
         rescaleAndCenterImageInScrollView(image: image)
-        ImageView.frame.size = image.size
+        imageView.frame.size = image.size
         
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 1.25
@@ -71,6 +71,6 @@ final class SingleImageViewController: UIViewController {
 
 extension SingleImageViewController: UIScrollViewDelegate {
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        ImageView
+        imageView
     }
 }

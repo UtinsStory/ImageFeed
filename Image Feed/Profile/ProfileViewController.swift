@@ -124,5 +124,7 @@ final class ProfileViewController: UIViewController {
     }
     
     @objc
-    private func didTapExitButton() { }
+    private func didTapExitButton() {
+        //TODO: - Добавить логику выхода из профиля
+    }
 }

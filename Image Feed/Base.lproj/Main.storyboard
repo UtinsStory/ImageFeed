@@ -162,7 +162,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="dQT-P2-A2t"/>
                     <connections>
-                        <outlet property="ImageView" destination="Ba3-hI-W12" id="wcs-Pf-CEO"/>
+                        <outlet property="imageView" destination="Ba3-hI-W12" id="xJC-u9-4sf"/>
                         <outlet property="scrollView" destination="H1X-q3-U4M" id="Rzw-IP-TC1"/>
                     </connections>
                 </viewController>
