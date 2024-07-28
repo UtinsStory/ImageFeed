@@ -6,6 +6,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -205,6 +206,7 @@
                                 </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="didTapLoginButton" destination="F2j-cD-lAW" eventType="touchUpInside" id="p3U-W8-zsz"/>
+                                    <segue destination="abg-Cl-p6f" kind="show" identifier="ShowWebView" id="Ech-9b-nG4"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -226,7 +228,42 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="I46-al-Iel" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="101.44927536231884" y="-843.08035714285711"/>
+            <point key="canvasLocation" x="-128" y="-1680"/>
+        </scene>
+        <!--Web View View Controller-->
+        <scene sceneID="41q-XC-f9w">
+            <objects>
+                <viewController id="abg-Cl-p6f" customClass="WebViewViewController" customModule="Image_Feed" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="V7g-cG-YVW">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UIE-MJ-qzr">
+                                <rect key="frame" x="0.0" y="92" width="414" height="804"/>
+                                <color key="backgroundColor" name="YP White"/>
+                                <wkWebViewConfiguration key="configuration">
+                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                    <wkPreferences key="preferences"/>
+                                </wkWebViewConfiguration>
+                            </wkWebView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="wet-xH-gSB"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="UIE-MJ-qzr" secondAttribute="trailing" id="9cz-3K-7jz"/>
+                            <constraint firstAttribute="bottom" secondItem="UIE-MJ-qzr" secondAttribute="bottom" id="G3q-oU-LcU"/>
+                            <constraint firstItem="UIE-MJ-qzr" firstAttribute="leading" secondItem="V7g-cG-YVW" secondAttribute="leading" id="WIq-eg-620"/>
+                            <constraint firstItem="UIE-MJ-qzr" firstAttribute="top" secondItem="wet-xH-gSB" secondAttribute="top" id="ZL6-3q-nCZ"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="yal-oA-yvA"/>
+                    <connections>
+                        <outlet property="webView" destination="UIE-MJ-qzr" id="Bt3-2l-meq"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9jd-tu-DrU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="887" y="-1680"/>
         </scene>
         <!--Profile View Controller-->
         <scene sceneID="9pZ-zI-doJ">
@@ -282,7 +319,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="boJ-cU-jzp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-808.69565217391312" y="-843.08035714285711"/>
+            <point key="canvasLocation" x="-1220" y="-1680"/>
         </scene>
     </scenes>
     <resources>
@@ -298,5 +335,8 @@
         <namedColor name="YP White">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>
