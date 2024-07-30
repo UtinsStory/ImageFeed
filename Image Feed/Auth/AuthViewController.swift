@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class AuthViewController: UIViewController {
+final class AuthViewController: UIViewController, WebViewViewControllerDelegate {
     
     //MARK: - IB Outlets
     @IBOutlet private var screenLogoImageView: UIImageView!
@@ -17,7 +17,7 @@ final class AuthViewController: UIViewController {
     
     //MARK: - Properties
     
-    
+    private let showSWebViewIdentifier = "ShowWebView"
     
     
     //MARK: - Lifecycle
@@ -28,6 +28,16 @@ final class AuthViewController: UIViewController {
         
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == showSWebViewIdentifier {
+            guard
+                let webViewViewController = segue.destination as? WebViewViewController
+            else { fatalError("Failed to prepare for \(showSWebViewIdentifier)") }
+            webViewViewController.delegate = self
+        } else {
+            super.prepare(for: segue, sender: sender)
+        }
+    }
     
     
     //MARK: IB Actions
@@ -48,7 +58,11 @@ final class AuthViewController: UIViewController {
         navigationItem.backBarButtonItem?.tintColor = UIColor(named: "YP Black")
     }
     
+    func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {}
     
+    func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
+        dismiss(animated: true)
+    }
     
     
     
