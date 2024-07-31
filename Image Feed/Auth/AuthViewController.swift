@@ -19,6 +19,10 @@ final class AuthViewController: UIViewController, WebViewViewControllerDelegate 
     
     private let showSWebViewIdentifier = "ShowWebView"
     
+    private let oauth2Service = OAuth2Service.shared
+    
+    weak var delegate: AuthViewControllerDelegate?
+    
     
     //MARK: - Lifecycle
     override func viewDidLoad() {
@@ -58,7 +62,21 @@ final class AuthViewController: UIViewController, WebViewViewControllerDelegate 
         navigationItem.backBarButtonItem?.tintColor = UIColor(named: "YP Black")
     }
     
-    func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {}
+    func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
+        navigationController?.popToRootViewController(animated: true)
+        OAuth2Service.shared.fetchOAuthToken(withCode: code) {[weak self] result in
+            guard let self else { return }
+            switch result {
+            case .success(let token):
+                OAuth2TokenStorage.shared.token = token
+                print("Actual token: \(token)")
+                self.delegate?.didAuthenticate(self)
+            case .failure(_):
+                //Code?
+                break
+            }
+        }
+    }
     
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
         dismiss(animated: true)
