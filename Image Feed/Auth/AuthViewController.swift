@@ -7,29 +7,25 @@
 
 import UIKit
 
-final class AuthViewController: UIViewController, WebViewViewControllerDelegate {
+final class AuthViewController: UIViewController,
+                                    WebViewViewControllerDelegate {
     
     //MARK: - IB Outlets
     @IBOutlet private var screenLogoImageView: UIImageView!
-    
     @IBOutlet private var loginButton: UIButton!
-    
     
     //MARK: - Properties
     
     private let showSWebViewIdentifier = "ShowWebView"
-    
     private let oauth2Service = OAuth2Service.shared
-    
+    private let oauth2Storage = OAuth2TokenStorage.shared
     weak var delegate: AuthViewControllerDelegate?
     
-    
     //MARK: - Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         configureBackButton()
-        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -43,18 +39,14 @@ final class AuthViewController: UIViewController, WebViewViewControllerDelegate 
         }
     }
     
-    
     //MARK: IB Actions
+    
     @IBAction func didTapLoginButton() {
-        //TODO: Логика работы
+        //TODO: Реализовать функционал выхода из профиля
     }
     
-    
-    
-    
-    
-    
     //MARK: - Methods
+    
     private func configureBackButton() {
         navigationController?.navigationBar.backIndicatorImage = UIImage(named: "nav_back_button")
         navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "nav_back_button")
@@ -64,14 +56,14 @@ final class AuthViewController: UIViewController, WebViewViewControllerDelegate 
     
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
         navigationController?.popToRootViewController(animated: true)
-        OAuth2Service.shared.fetchOAuthToken(withCode: code) {[weak self] result in
+        oauth2Service.fetchOAuthToken(withCode: code) {[weak self] result in
             guard let self else { return }
             switch result {
             case .success(let token):
-                OAuth2TokenStorage.shared.token = token
+                oauth2Storage.token = token
                 print("Actual token: \(token)")
                 self.delegate?.didAuthenticate(self)
-            case .failure(_):
+            case .failure:
                 //TODO: Code
                 break
             }
@@ -81,7 +73,4 @@ final class AuthViewController: UIViewController, WebViewViewControllerDelegate 
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
         dismiss(animated: true)
     }
-    
-    
-    
 }
