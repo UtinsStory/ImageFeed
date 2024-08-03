@@ -72,7 +72,7 @@ final class AuthViewController: UIViewController, WebViewViewControllerDelegate 
                 print("Actual token: \(token)")
                 self.delegate?.didAuthenticate(self)
             case .failure(_):
-                //Code?
+                //TODO: Code
                 break
             }
         }

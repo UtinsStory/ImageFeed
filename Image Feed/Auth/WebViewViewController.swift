@@ -32,8 +32,11 @@ final class WebViewViewController: UIViewController {
         webView.navigationDelegate = self
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationController?.navigationBar.barTintColor = .white
+        setNeedsStatusBarAppearanceUpdate()
         
         webView.addObserver(
             self,
@@ -43,9 +46,13 @@ final class WebViewViewController: UIViewController {
         updateProgress()
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        webView.removeObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), context: nil)
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        webView.removeObserver(
+            self,
+            forKeyPath: #keyPath(WKWebView.estimatedProgress),
+            context: nil)
     }
     
     override func observeValue(
@@ -69,6 +76,10 @@ final class WebViewViewController: UIViewController {
         progressView.progress = Float(webView.estimatedProgress)
         progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
     }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+            .lightContent
+        }
     
     private func loadAuthView() {
             guard var urlComponents = URLComponents(string: WebViewConstants.unsplashAuthorizeURLString)

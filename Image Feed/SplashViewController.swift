@@ -12,11 +12,7 @@ protocol AuthViewControllerDelegate: AnyObject {
 }
 
 
-final class SplashViewController: UIViewController, AuthViewControllerDelegate {
-    func didAuthenticate(_ vc: AuthViewController) {
-        dismiss(animated: true)
-    }
-    
+final class SplashViewController: UIViewController {
     
     private let showAuthSegueIdentifier = "ShowAuthFlow"
     
@@ -26,8 +22,8 @@ final class SplashViewController: UIViewController, AuthViewControllerDelegate {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-            .lightContent
-        }
+        .lightContent
+    }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -59,9 +55,10 @@ final class SplashViewController: UIViewController, AuthViewControllerDelegate {
             super.prepare(for: segue, sender: sender)
         }
     }
-    
-    
-    
-    
-    
+}
+
+extension SplashViewController: AuthViewControllerDelegate {
+    func didAuthenticate(_ vc: AuthViewController) {
+        vc.dismiss(animated: true)
+    }
 }
