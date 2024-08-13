@@ -15,6 +15,8 @@ protocol AuthViewControllerDelegate: AnyObject {
 final class SplashViewController: UIViewController {
     
     private let showAuthSegueIdentifier = "ShowAuthFlow"
+    private let profileService = ProfileService.shared
+    private let tokenStorage = OAuth2TokenStorage.shared
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -42,6 +44,21 @@ final class SplashViewController: UIViewController {
         window.rootViewController = tabBarController
     }
     
+    private func fetchProfile(_ token: String) {
+        UIBlockingProgressHUD.show()
+        profileService.fetchProfile(token) { [weak self] result in
+            UIBlockingProgressHUD.dismiss()
+            guard let self = self else {return}
+            switch result {
+            case .success:
+                self.switchToTabBarController()
+            case .failure:
+                //Ошибка получения профиля
+                break
+            }
+        }
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == showAuthSegueIdentifier {
             guard let navigationController = segue.destination as? UINavigationController,
@@ -60,5 +77,9 @@ final class SplashViewController: UIViewController {
 extension SplashViewController: AuthViewControllerDelegate {
     func didAuthenticate(_ vc: AuthViewController) {
         vc.dismiss(animated: true)
+        guard let token = tokenStorage.token else {return}
+        
+        fetchProfile(token)
     }
+    
 }

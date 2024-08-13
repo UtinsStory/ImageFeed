@@ -17,6 +17,9 @@ final class ProfileViewController: UIViewController {
     private var loginLabel: UILabel?
     private var descriptionLabel: UILabel?
     
+    private let profileService = ProfileService.shared
+    private let tokenStorage = OAuth2TokenStorage.shared
+    
     //MARK: - LIFECYCLE
     
     override func viewDidLoad() {
@@ -121,6 +124,29 @@ final class ProfileViewController: UIViewController {
         }
         descriptionLabel.topAnchor.constraint(equalTo: login.bottomAnchor, constant: 8).isActive = true
         self.descriptionLabel = descriptionLabel
+    }
+    
+    private func updateProfileDetails() {
+        guard let token = tokenStorage.token else {
+            print("Token is missing.")
+            return
+        }
+        
+        profileService.fetchProfile(token) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let profile):
+                DispatchQueue.main.async {
+                    self.nameLabel?.text = profile.name
+                    self.loginLabel?.text = profile.loginname
+                    self.descriptionLabel?.text = profile.bio
+                }
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    print("Error fetching profile: \(error)")
+                }
+            }
+        }
     }
     
     @objc
