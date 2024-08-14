@@ -31,11 +31,14 @@ final class ProfileService {
         task?.cancel()
         lastToken = token
         
-        guard let request = makeProfileDataRequest(token: token) else {
+        guard 
+            let request = makeProfileDataRequest(token: token)
+        else {
             print("Error while creating the request")
             completion(.failure(AuthServiceError.invalidRequest))
             return
         }
+        
         let task = urlSession.data(for: request) { result in
             DispatchQueue.main.async {
                 switch result {
@@ -44,7 +47,7 @@ final class ProfileService {
                         let decoder = JSONDecoder()
                         let response = try decoder.decode(ProfileResult.self, from: data)
                         self.profile = Profile(usernmane: response.username,
-                                               name: "\(response.firstName)\(response.lastname ?? "")",
+                                               name: "\(response.firstName)\(response.lastName ?? "")",
                                                loginname: "@\(response.username)",
                                                bio: response.bio ?? "")
                         completion(.success(self.profile!))
