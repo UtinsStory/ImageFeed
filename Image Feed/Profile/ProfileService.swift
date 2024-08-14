@@ -47,12 +47,12 @@ final class ProfileService {
                         let decoder = JSONDecoder()
                         let response = try decoder.decode(ProfileResult.self, from: data)
                         self.profile = Profile(usernmane: response.username,
-                                               name: "\(response.firstName)\(response.lastName ?? "")",
+                                               name: "\(response.firstName) \(response.lastName ?? "")",
                                                loginname: "@\(response.username)",
                                                bio: response.bio ?? "")
                         completion(.success(self.profile!))
                     } catch {
-                        print("Profile data decode error: \(error.localizedDescription)")
+                        print("Profile data decode error: \(error)")
                         completion(.failure(error))
                     }
                     

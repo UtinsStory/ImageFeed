@@ -31,6 +31,9 @@ final class ProfileViewController: UIViewController {
         addNameLabel()
         addLoginLabel()
         addDescriptionLabel()
+        
+        guard let profile = profileService.profile else { return }
+        updateProfileDetails(profile: profile)
     }
     
     //MARK: - METHODS
@@ -126,27 +129,32 @@ final class ProfileViewController: UIViewController {
         self.descriptionLabel = descriptionLabel
     }
     
-    private func updateProfileDetails() {
-        guard let token = tokenStorage.token else {
-            print("Token is missing.")
-            return
-        }
-        
-        profileService.fetchProfile(token) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let profile):
-                DispatchQueue.main.async {
-                    self.nameLabel?.text = profile.name
-                    self.loginLabel?.text = profile.loginname
-                    self.descriptionLabel?.text = profile.bio
-                }
-            case .failure(let error):
-                DispatchQueue.main.async {
-                    print("Error fetching profile: \(error)")
-                }
-            }
-        }
+//    private func updateProfileDetails() {
+//        guard let token = tokenStorage.token else {
+//            print("Token is missing.")
+//            return
+//        }
+//        
+//        profileService.fetchProfile(token) { [weak self] result in
+//            guard let self = self else { return }
+//            switch result {
+//            case .success(let profile):
+//                DispatchQueue.main.async {
+//                    self.nameLabel?.text = profile.name
+//                    self.loginLabel?.text = profile.loginname
+//                    self.descriptionLabel?.text = profile.bio
+//                }
+//            case .failure(let error):
+//                DispatchQueue.main.async {
+//                    print("Error fetching profile: \(error)")
+//                }
+//            }
+//        }
+//    }
+    private func updateProfileDetails(profile: Profile) {
+        nameLabel?.text = profile.name
+        loginLabel?.text = profile.loginname
+        descriptionLabel?.text = profile.bio
     }
     
     @objc
