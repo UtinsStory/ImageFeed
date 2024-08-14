@@ -22,27 +22,27 @@ final class OAuth2Service {
     //MARK: - Methods
     
     private func makeOAuthTokenRequest(code: String) -> URLRequest? {
-//        var urlComponents = URLComponents(string: "https://unsplash.com/oauth/token")
-//        urlComponents?.queryItems = [
-//            URLQueryItem(name: "client_id", value: Constants.accessKey),
-//            URLQueryItem(name: "client_secret", value: Constants.secretKey),
-//            URLQueryItem(name: "redirect_uri", value: Constants.redirectURI),
-//            URLQueryItem(name: "code", value: code),
-//            URLQueryItem(name: "grant_type", value: "authorization_code")
-//        ]
-//        guard let url = urlComponents?.url else { return nil }
-//        
-//        var request = URLRequest(url: url)
-//        request.httpMethod = "POST"
-//        
-//        return request
-        guard let url = URL(string: "...\(code)") else {
-            assertionFailure("Failed to create URL")
-            return nil
-        }
+        var urlComponents = URLComponents(string: "https://unsplash.com/oauth/token")
+        urlComponents?.queryItems = [
+            URLQueryItem(name: "client_id", value: Constants.accessKey),
+            URLQueryItem(name: "client_secret", value: Constants.secretKey),
+            URLQueryItem(name: "redirect_uri", value: Constants.redirectURI),
+            URLQueryItem(name: "code", value: code),
+            URLQueryItem(name: "grant_type", value: "authorization_code")
+        ]
+        guard let url = urlComponents?.url else { return nil }
+        
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
+        
         return request
+//        guard let url = URL(string: "...\(code)") else {
+//            assertionFailure("Failed to create URL")
+//            return nil
+//        }
+//        var request = URLRequest(url: url)
+//        request.httpMethod = "POST"
+//        return request
     }
     
     func fetchOAuthToken(

@@ -67,7 +67,7 @@ final class AuthViewController: UIViewController,
                 print("Actual token: \(token)")
                 self.delegate?.didAuthenticate(self)
             case .failure:
-                //TODO: Code
+                print("Error while getting token")
                 break
             }
         }
