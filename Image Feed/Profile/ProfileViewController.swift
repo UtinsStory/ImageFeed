@@ -19,6 +19,7 @@ final class ProfileViewController: UIViewController {
     
     private let profileService = ProfileService.shared
     private let tokenStorage = OAuth2TokenStorage.shared
+    private var profileImageServiceObserver: NSObjectProtocol?
     
     //MARK: - LIFECYCLE
     
@@ -34,6 +35,15 @@ final class ProfileViewController: UIViewController {
         
         guard let profile = profileService.profile else { return }
         updateProfileDetails(profile: profile)
+        
+        profileImageServiceObserver = NotificationCenter.default.addObserver(
+            forName: ProfileImageService.didChangeNotification,
+            object: nil,
+            queue: .main) { [weak self] _ in
+                guard let self = self else { return }
+                self.updateAvatar()
+            }
+        updateAvatar()
     }
     
     //MARK: - METHODS
@@ -129,33 +139,42 @@ final class ProfileViewController: UIViewController {
         self.descriptionLabel = descriptionLabel
     }
     
-//    private func updateProfileDetails() {
-//        guard let token = tokenStorage.token else {
-//            print("Token is missing.")
-//            return
-//        }
-//        
-//        profileService.fetchProfile(token) { [weak self] result in
-//            guard let self = self else { return }
-//            switch result {
-//            case .success(let profile):
-//                DispatchQueue.main.async {
-//                    self.nameLabel?.text = profile.name
-//                    self.loginLabel?.text = profile.loginname
-//                    self.descriptionLabel?.text = profile.bio
-//                }
-//            case .failure(let error):
-//                DispatchQueue.main.async {
-//                    print("Error fetching profile: \(error)")
-//                }
-//            }
-//        }
-//    }
+    //    private func updateProfileDetails() {
+    //        guard let token = tokenStorage.token else {
+    //            print("Token is missing.")
+    //            return
+    //        }
+    //
+    //        profileService.fetchProfile(token) { [weak self] result in
+    //            guard let self = self else { return }
+    //            switch result {
+    //            case .success(let profile):
+    //                DispatchQueue.main.async {
+    //                    self.nameLabel?.text = profile.name
+    //                    self.loginLabel?.text = profile.loginname
+    //                    self.descriptionLabel?.text = profile.bio
+    //                }
+    //            case .failure(let error):
+    //                DispatchQueue.main.async {
+    //                    print("Error fetching profile: \(error)")
+    //                }
+    //            }
+    //        }
+    //    }
     private func updateProfileDetails(profile: Profile) {
         nameLabel?.text = profile.name
         loginLabel?.text = profile.loginname
         descriptionLabel?.text = profile.bio
     }
+    
+    private func updateAvatar() {                                   // 8
+        guard
+            let profileImageURL = ProfileImageService.shared.avatarURL,
+            let url = URL(string: profileImageURL)
+        else { return }
+        // TODO [Sprint 11] Обновитt аватар, используя Kingfisher
+    }
+    
     
     @objc
     private func didTapExitButton() {

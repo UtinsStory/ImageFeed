@@ -16,6 +16,7 @@ final class SplashViewController: UIViewController {
     
     private let showAuthSegueIdentifier = "ShowAuthFlow"
     private let profileService = ProfileService.shared
+    private let profileImageService = ProfileImageService.shared
     private let tokenStorage = OAuth2TokenStorage.shared
     
     override func viewWillAppear(_ animated: Bool) {
@@ -53,6 +54,7 @@ final class SplashViewController: UIViewController {
             switch result {
             case .success:
                 self.switchToTabBarController()
+                self.profileImageService.fetchProfileImageURL(username: profileService.profile!.usernmane, token: token) { _ in }
             case .failure:
                 //Ошибка получения профиля
                 break
