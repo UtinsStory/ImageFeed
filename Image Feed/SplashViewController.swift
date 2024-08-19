@@ -16,6 +16,7 @@ final class SplashViewController: UIViewController {
     
     private let showAuthSegueIdentifier = "ShowAuthFlow"
     private let profileService = ProfileService.shared
+    private let profileImageService = ProfileImageService.shared
     private let tokenStorage = OAuth2TokenStorage.shared
     
     override func viewWillAppear(_ animated: Bool) {
@@ -30,8 +31,9 @@ final class SplashViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        if OAuth2TokenStorage.shared.token != nil {
+        if let token = tokenStorage.token{
             switchToTabBarController()
+            fetchProfile(token)
         } else {
             performSegue(withIdentifier: showAuthSegueIdentifier, sender: nil)
         }
@@ -50,8 +52,9 @@ final class SplashViewController: UIViewController {
             UIBlockingProgressHUD.dismiss()
             guard let self = self else {return}
             switch result {
-            case .success:
+            case .success(let profile):
                 self.switchToTabBarController()
+                self.profileImageService.fetchProfileImageURL(username: profile.usernmane, token: token) { _ in }
             case .failure:
                 //Ошибка получения профиля
                 break

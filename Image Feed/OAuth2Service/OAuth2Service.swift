@@ -36,13 +36,6 @@ final class OAuth2Service {
         request.httpMethod = "POST"
         
         return request
-//        guard let url = URL(string: "...\(code)") else {
-//            assertionFailure("Failed to create URL")
-//            return nil
-//        }
-//        var request = URLRequest(url: url)
-//        request.httpMethod = "POST"
-//        return request
     }
     
     func fetchOAuthToken(
@@ -54,6 +47,7 @@ final class OAuth2Service {
             if lastCode != code {
                 task?.cancel()
             } else {
+                print("[OAuth2Service: fetchOAuthToken]: Invalid request")
                 completion(.failure(AuthServiceError.invalidRequest))
                 return
             }
@@ -67,57 +61,24 @@ final class OAuth2Service {
         guard
             let request = makeOAuthTokenRequest(code: code)
         else {
+            print("[OAuth2Service: fetchOAuthToken]: Error while creating request")
             completion(.failure(AuthServiceError.invalidRequest))
             return
         }
         
-        let task = urlSession.data(for: request) { result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let data):
-                    do {
-                        let decoder = JSONDecoder()
-                        let response = try decoder.decode(OAuthTokenResponseBody.self, from: data)
-                        let token = response.token
-                        completion(.success(token))
-                    } catch {
-                        print("Authorization token decode error: \(error.localizedDescription)")
-                        completion(.failure(error))
-                    }
-                    
-                case .failure(let error):
-                    completion(.failure(error))
-                }
-                self.task = nil
-                self.lastCode = nil
+        let task = urlSession.objectTask(for: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
+            guard let self else { return }
+            switch result {
+            case .success(let data):
+                let token = data.acccessToken
+                completion(.success(token))
+            case .failure(let error):
+                print("[OAuth2Service: fetchOAuthToken]: Network error")
+                completion(.failure(error))
             }
         }
-        self.task = task
-        task.resume()
+            self.task = task
+            task.resume()
+        }
     }
-}
-//        let request = makeOAuthTokenRequest(code: code)
-//        guard let request else {
-//            print("Invalid fetch token request")
-//            return
-//        }
-//
-//        let task = URLSession.shared.data(for: request) { result in
-//            switch result {
-//            case .success(let data):
-//                do {
-//                    let decoder = JSONDecoder()
-//                    let response = try decoder.decode(OAuthTokenResponseBody.self, from: data)
-//                    let token = response.token
-//                    completion(.success(token))
-//                } catch {
-//                    print("Authorization toke decode error: \(error.localizedDescription)")
-//                    completion(.failure(error))
-//                }
-//
-//            case .failure(let error):
-//                completion(.failure(error))
-//            }
-//        }
-//        task.resume()
-
+ 

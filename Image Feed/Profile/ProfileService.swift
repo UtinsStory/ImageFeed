@@ -9,7 +9,6 @@ import Foundation
 
 final class ProfileService {
     
-    
     static let shared = ProfileService()
     private init() {}
     
@@ -24,52 +23,50 @@ final class ProfileService {
         assert(Thread.isMainThread)
         
         guard lastToken != token else {
-            print("Invalid request")
+            print("[ProfileService: fetchProfile]: Invalid request")
             completion(.failure(AuthServiceError.invalidRequest))
             return
         }
         task?.cancel()
         lastToken = token
         
-        guard 
+        guard
             let request = makeProfileDataRequest(token: token)
         else {
-            print("Error while creating the request")
+            print("[ProfileService: fetchProfile]: Error while creating request")
             completion(.failure(AuthServiceError.invalidRequest))
             return
         }
         
-        let task = urlSession.data(for: request) { result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let data):
-                    do {
-                        let decoder = JSONDecoder()
-                        let response = try decoder.decode(ProfileResult.self, from: data)
-                        self.profile = Profile(usernmane: response.username,
-                                               name: "\(response.firstName)\(response.lastName ?? "")",
-                                               loginname: "@\(response.username)",
-                                               bio: response.bio ?? "")
-                        completion(.success(self.profile!))
-                    } catch {
-                        print("Profile data decode error: \(error.localizedDescription)")
-                        completion(.failure(error))
-                    }
-                    
-                case .failure(let error):
-                    completion(.failure(error))
-                }
-                self.task = nil
-                self.lastToken = nil
+        let task = urlSession.objectTask(for: request) { [weak self] (result: Result<ProfileResult, Error>) in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let data):
+                self.profile = Profile(
+                    usernmane: data.username,
+                    name: "\(data.firstName) \(data.lastName ?? "")",
+                    loginname: "@\(data.username)",
+                    bio: data.bio ?? ""
+                )
+                completion(.success(self.profile!))
+            case .failure(let error):
+                print("[ProfileService: fetchProfile]: Network error")
+                completion(.failure(error))
             }
+            self.task = nil
+            self.lastToken = nil
         }
-            self.task = task
-            task.resume()
-
+        self.task = task
+        task.resume()
     }
     
+    
     private func makeProfileDataRequest(token: String) -> URLRequest? {
-        guard let url = URL(string: profileURL) else { return nil }
+        guard let url = URL(string: profileURL) else {
+            assertionFailure("Failed to create URL")
+            return nil
+        }
         
         var request = URLRequest(url: url)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")

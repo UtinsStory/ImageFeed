@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
     
@@ -19,18 +20,31 @@ final class ProfileViewController: UIViewController {
     
     private let profileService = ProfileService.shared
     private let tokenStorage = OAuth2TokenStorage.shared
+    private var profileImageServiceObserver: NSObjectProtocol?
     
     //MARK: - LIFECYCLE
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor(red: 0.10, green: 0.11, blue: 0.13, alpha: 1.00)
+        view.backgroundColor = UIColor(named: "YP Black")
         
         addProfilePic()
         addExitButton()
         addNameLabel()
         addLoginLabel()
         addDescriptionLabel()
+        
+        guard let profile = profileService.profile else { return }
+        updateProfileDetails(profile: profile)
+        
+        profileImageServiceObserver = NotificationCenter.default.addObserver(
+            forName: ProfileImageService.didChangeNotification,
+            object: nil,
+            queue: .main) { [weak self] _ in
+                guard let self = self else { return }
+                self.updateAvatar()
+            }
+        updateAvatar()
     }
     
     //MARK: - METHODS
@@ -126,28 +140,28 @@ final class ProfileViewController: UIViewController {
         self.descriptionLabel = descriptionLabel
     }
     
-    private func updateProfileDetails() {
-        guard let token = tokenStorage.token else {
-            print("Token is missing.")
-            return
-        }
-        
-        profileService.fetchProfile(token) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let profile):
-                DispatchQueue.main.async {
-                    self.nameLabel?.text = profile.name
-                    self.loginLabel?.text = profile.loginname
-                    self.descriptionLabel?.text = profile.bio
-                }
-            case .failure(let error):
-                DispatchQueue.main.async {
-                    print("Error fetching profile: \(error)")
-                }
-            }
-        }
+    private func updateProfileDetails(profile: Profile) {
+        nameLabel?.text = profile.name
+        loginLabel?.text = profile.loginname
+        descriptionLabel?.text = profile.bio
     }
+    
+    private func updateAvatar() {
+        guard
+            let profileImageURL = ProfileImageService.shared.avatarURL,
+            let url = URL(string: profileImageURL)
+        else { return }
+        
+        let procesoor = RoundCornerImageProcessor(cornerRadius: 35)
+                    |> BlendImageProcessor(blendMode: .normal, backgroundColor: UIColor(named: "YP Black"))
+        
+        profilePicImageView?.kf.indicatorType = .activity
+        profilePicImageView?.kf.setImage(with: url,
+                                         placeholder: UIImage(named: "placeholder.jpg"),
+                                         options: [.processor(procesoor)]
+        )
+    }
+    
     
     @objc
     private func didTapExitButton() {
