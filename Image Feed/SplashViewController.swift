@@ -52,9 +52,9 @@ final class SplashViewController: UIViewController {
             UIBlockingProgressHUD.dismiss()
             guard let self = self else {return}
             switch result {
-            case .success:
+            case .success(let profile):
                 self.switchToTabBarController()
-                self.profileImageService.fetchProfileImageURL(username: profileService.profile!.usernmane, token: token) { _ in }
+                self.profileImageService.fetchProfileImageURL(username: profile.usernmane, token: token) { _ in }
             case .failure:
                 //Ошибка получения профиля
                 break

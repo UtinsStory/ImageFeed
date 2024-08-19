@@ -63,7 +63,10 @@ final class ProfileService {
     
     
     private func makeProfileDataRequest(token: String) -> URLRequest? {
-        guard let url = URL(string: profileURL) else { return nil }
+        guard let url = URL(string: profileURL) else {
+            assertionFailure("Failed to create URL")
+            return nil
+        }
         
         var request = URLRequest(url: url)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")

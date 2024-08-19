@@ -50,16 +50,15 @@ final class ProfileImageService {
                     
                     switch result {
                     case .success(let data):
-                        let profileImageURL = data.profileImage.small
+                        let profileImageURL = data.profileImage.medium
                         self.avatarURL = profileImageURL
-                        completion(.success(profileImageURL))
                         NotificationCenter.default.post(
                             name: ProfileImageService.didChangeNotification,
-                            object: self,
-                            userInfo: ["URL": profileImageURL]
+                            object: self
                         )
+                        completion(.success(profileImageURL))
                     case .failure(let error):
-                        print("[ProfileImageService: fetchProfileImageURL]: Network error")
+                        print("[ProfileImageService: fetchProfileImageURL]: Error while fethicng the profile image")
                         completion(.failure(error))
                     }
                     self.task = nil
