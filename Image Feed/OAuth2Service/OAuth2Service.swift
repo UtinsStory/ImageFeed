@@ -70,15 +70,15 @@ final class OAuth2Service {
             guard let self else { return }
             switch result {
             case .success(let data):
-                let token = data.acccessToken
+                let token = data.accessToken
                 completion(.success(token))
             case .failure(let error):
                 print("[OAuth2Service: fetchOAuthToken]: Network error")
                 completion(.failure(error))
             }
         }
-            self.task = task
-            task.resume()
-        }
+        self.task = task
+        task.resume()
     }
- 
+}
+

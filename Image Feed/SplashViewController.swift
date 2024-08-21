@@ -32,7 +32,6 @@ final class SplashViewController: UIViewController {
         super.viewDidAppear(animated)
         
         if let token = tokenStorage.token{
-            switchToTabBarController()
             fetchProfile(token)
         } else {
             performSegue(withIdentifier: showAuthSegueIdentifier, sender: nil)
@@ -80,9 +79,6 @@ final class SplashViewController: UIViewController {
 extension SplashViewController: AuthViewControllerDelegate {
     func didAuthenticate(_ vc: AuthViewController) {
         vc.dismiss(animated: true)
-        guard let token = tokenStorage.token else {return}
-        
-        fetchProfile(token)
     }
     
 }
