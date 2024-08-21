@@ -76,6 +76,8 @@ final class OAuth2Service {
                 print("[OAuth2Service: fetchOAuthToken]: Network error")
                 completion(.failure(error))
             }
+            self.task = nil
+            self.lastCode = nil
         }
         self.task = task
         task.resume()

@@ -64,7 +64,7 @@ final class ProfileService {
     
     private func makeProfileDataRequest(token: String) -> URLRequest? {
         guard let url = URL(string: profileURL) else {
-            assertionFailure("Failed to create URL")
+            assertionFailure("[ProfileService: makeProfileDataRequest]: Failed to create URL")
             return nil
         }
         

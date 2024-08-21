@@ -18,6 +18,7 @@ final class SplashViewController: UIViewController {
     private let profileService = ProfileService.shared
     private let profileImageService = ProfileImageService.shared
     private let tokenStorage = OAuth2TokenStorage.shared
+    private var splashLogoImageView: UIImageView?
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -34,8 +35,31 @@ final class SplashViewController: UIViewController {
         if let token = tokenStorage.token{
             fetchProfile(token)
         } else {
-            performSegue(withIdentifier: showAuthSegueIdentifier, sender: nil)
+            let storyBoard = UIStoryboard(name: "Main", bundle: .main)
+            let authViewController = storyBoard.instantiateViewController(identifier: "AuthViewController") as? AuthViewController
+            
+            guard let authViewController else { return }
+            authViewController.delegate = self
+            authViewController.modalPresentationStyle = .fullScreen
+            
+            present(authViewController, animated: true)
         }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = UIColor(named: "YP Black")
+        addSplashLogo()
+        
+    }
+    
+    private func addSplashLogo() {
+        let splashLogoImageView = UIImageView(image: UIImage(named: "splash_screen_logo"))
+        splashLogoImageView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(splashLogoImageView)
+        splashLogoImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        splashLogoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        
     }
     
     private func switchToTabBarController() {
@@ -58,20 +82,6 @@ final class SplashViewController: UIViewController {
                 //Ошибка получения профиля
                 break
             }
-        }
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == showAuthSegueIdentifier {
-            guard let navigationController = segue.destination as? UINavigationController,
-                  let vc = navigationController.viewControllers[0] as? AuthViewController
-            else {
-                assertionFailure("Failed to prepare for \(showAuthSegueIdentifier)")
-                return
-            }
-            vc.delegate = self
-        } else {
-            super.prepare(for: segue, sender: sender)
         }
     }
 }
