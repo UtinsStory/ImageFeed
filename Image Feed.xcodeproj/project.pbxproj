@@ -27,6 +27,7 @@
 		BF44DD872C6DE3880057E1DA /* UserResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF44DD862C6DE3880057E1DA /* UserResult.swift */; };
 		BF44DD8A2C6F65880057E1DA /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = BF44DD892C6F65880057E1DA /* Kingfisher */; };
 		BF44DD922C7497570057E1DA /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = BF44DD912C7497570057E1DA /* SwiftKeychainWrapper */; };
+		BF44DD942C75E6DF0057E1DA /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF44DD932C75E6DF0057E1DA /* TabBarController.swift */; };
 		BF712DD12C5669AA001CF063 /* WebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF712DD02C5669AA001CF063 /* WebViewViewController.swift */; };
 		BF712DD32C58EB12001CF063 /* WebViewViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF712DD22C58EB12001CF063 /* WebViewViewControllerDelegate.swift */; };
 		BF712DD52C58F937001CF063 /* OAuth2Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF712DD42C58F937001CF063 /* OAuth2Service.swift */; };
@@ -56,6 +57,7 @@
 		BF44DD822C6BCC780057E1DA /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		BF44DD842C6DE2EA0057E1DA /* ProfileImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageService.swift; sourceTree = "<group>"; };
 		BF44DD862C6DE3880057E1DA /* UserResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserResult.swift; sourceTree = "<group>"; };
+		BF44DD932C75E6DF0057E1DA /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		BF712DD02C5669AA001CF063 /* WebViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewController.swift; sourceTree = "<group>"; };
 		BF712DD22C58EB12001CF063 /* WebViewViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewControllerDelegate.swift; sourceTree = "<group>"; };
 		BF712DD42C58F937001CF063 /* OAuth2Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2Service.swift; sourceTree = "<group>"; };
@@ -111,6 +113,7 @@
 				7D9CFA4B28DDEE8000D971A7 /* Assets.xcassets */,
 				7D9CFA4D28DDEE8000D971A7 /* LaunchScreen.storyboard */,
 				7D9CFA5028DDEE8000D971A7 /* Info.plist */,
+				BF44DD932C75E6DF0057E1DA /* TabBarController.swift */,
 			);
 			path = "Image Feed";
 			sourceTree = "<group>";
@@ -269,6 +272,7 @@
 				7D3DFB1628DDF696005A13F3 /* ImagesListViewController.swift in Sources */,
 				BF3BAE2D2C5663EB002EBD2E /* AuthViewController.swift in Sources */,
 				BF712DDD2C5A37EF001CF063 /* SplashViewController.swift in Sources */,
+				BF44DD942C75E6DF0057E1DA /* TabBarController.swift in Sources */,
 				BF3BAE2A2C566346002EBD2E /* Constants.swift in Sources */,
 				BF3786F52C4FB04C006924A3 /* SingleImageViewController.swift in Sources */,
 				BF712DD12C5669AA001CF063 /* WebViewViewController.swift in Sources */,
