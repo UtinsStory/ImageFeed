@@ -53,11 +53,6 @@ final class SplashViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // УДАЛИТЬ ПЕРЕД СДАЧЕЙ
-        KeychainWrapper.standard.removeAllKeys()
-        // УДАЛИТЬ ПЕРЕД СДАЧЕЙ
-        
         view.backgroundColor = UIColor(named: "YP Black")
         addSplashLogo()
         
