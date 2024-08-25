@@ -44,36 +44,12 @@ final class WebViewViewController: UIViewController {
         
         navigationController?.navigationBar.barTintColor = .white
         setNeedsStatusBarAppearanceUpdate()
-        
-//        webView.addObserver(
-//            self,
-//            forKeyPath: #keyPath(WKWebView.estimatedProgress),
-//            options: .new,
-//            context: nil)
-//        updateProgress()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        
-//        webView.removeObserver(
-//            self,
-//            forKeyPath: #keyPath(WKWebView.estimatedProgress),
-//            context: nil)
+
     }
-    
-//    override func observeValue(
-//        forKeyPath keyPath: String?,
-//        of object: Any?,
-//        change: [NSKeyValueChangeKey : Any]?,
-//        context: UnsafeMutableRawPointer?
-//    ) {
-//        if keyPath == #keyPath(WKWebView.estimatedProgress) {
-//            updateProgress()
-//        } else {
-//            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-//        }
-//    }
     
     @IBAction private func didTapBackButton(_ sender: Any) {
         delegate?.webViewViewControllerDidCancel(self)

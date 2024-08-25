@@ -58,7 +58,8 @@ final class AuthViewController: UIViewController,
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
         navigationController?.popToRootViewController(animated: true)
         UIBlockingProgressHUD.show()
-        oauth2Service.fetchOAuthToken(withCode: code) {[weak self] result in
+        
+        OAuth2Service.shared.fetchOAuthToken(withCode: code) {[weak self] result in
             UIBlockingProgressHUD.dismiss()
             guard let self else { return }
             switch result {
@@ -67,13 +68,13 @@ final class AuthViewController: UIViewController,
                 print("Actual token: \(token)")
                 self.delegate?.didAuthenticate(self)
             case .failure:
-               let alert = UIAlertController(
+                let alert = UIAlertController(
                     title: "Что-то пошло не так(",
                     message: "Не удалось войти в систему",
                     preferredStyle: .alert)
                 let action = UIAlertAction(title: "OK", style: .default)
-                    alert.addAction(action)
-                    self.present(alert, animated: true)
+                alert.addAction(action)
+                self.present(alert, animated: true)
             }
         }
     }

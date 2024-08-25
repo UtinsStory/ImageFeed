@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftKeychainWrapper
 
 protocol AuthViewControllerDelegate: AnyObject {
     func didAuthenticate(_ vc: AuthViewController)
@@ -36,18 +37,27 @@ final class SplashViewController: UIViewController {
             fetchProfile(token)
         } else {
             let storyBoard = UIStoryboard(name: "Main", bundle: .main)
-            let authViewController = storyBoard.instantiateViewController(identifier: "AuthViewController") as? AuthViewController
-            
-            guard let authViewController else { return }
+            let navigationController = storyBoard.instantiateViewController(identifier:
+                                                                                "NavigationController") as? UINavigationController
+            let authViewController = storyBoard.instantiateViewController(identifier:
+                                                                            "AuthViewController") as? AuthViewController
+            guard let authViewController, let navigationController else { return }
+            navigationController.modalPresentationStyle = .fullScreen
+            navigationController.isModalInPresentation = true
+            navigationController.viewControllers[0] = authViewController
             authViewController.delegate = self
-            authViewController.modalPresentationStyle = .fullScreen
-            
-            present(authViewController, animated: true)
+            authViewController.modalPresentationStyle = . fullScreen
+            present(navigationController, animated: true)
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // УДАЛИТЬ ПЕРЕД СДАЧЕЙ
+        KeychainWrapper.standard.removeAllKeys()
+        // УДАЛИТЬ ПЕРЕД СДАЧЕЙ
+        
         view.backgroundColor = UIColor(named: "YP Black")
         addSplashLogo()
         
