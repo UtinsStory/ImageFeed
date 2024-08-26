@@ -157,7 +157,7 @@ final class ProfileViewController: UIViewController {
         
         profilePicImageView?.kf.indicatorType = .activity
         profilePicImageView?.kf.setImage(with: url,
-                                         placeholder: UIImage(named: "placeholder.jpg"),
+                                         placeholder: UIImage(named: "avatar_placeholder"),
                                          options: [.processor(procesoor)]
         )
     }

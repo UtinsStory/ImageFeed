@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftKeychainWrapper
 
 protocol AuthViewControllerDelegate: AnyObject {
     func didAuthenticate(_ vc: AuthViewController)
@@ -18,6 +19,7 @@ final class SplashViewController: UIViewController {
     private let profileService = ProfileService.shared
     private let profileImageService = ProfileImageService.shared
     private let tokenStorage = OAuth2TokenStorage.shared
+    private var splashLogoImageView: UIImageView?
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -32,11 +34,37 @@ final class SplashViewController: UIViewController {
         super.viewDidAppear(animated)
         
         if let token = tokenStorage.token{
-            switchToTabBarController()
             fetchProfile(token)
         } else {
-            performSegue(withIdentifier: showAuthSegueIdentifier, sender: nil)
+            let storyBoard = UIStoryboard(name: "Main", bundle: .main)
+            let navigationController = storyBoard.instantiateViewController(identifier:
+                                                                                "NavigationController") as? UINavigationController
+            let authViewController = storyBoard.instantiateViewController(identifier:
+                                                                            "AuthViewController") as? AuthViewController
+            guard let authViewController, let navigationController else { return }
+            navigationController.modalPresentationStyle = .fullScreen
+            navigationController.isModalInPresentation = true
+            navigationController.viewControllers[0] = authViewController
+            authViewController.delegate = self
+            authViewController.modalPresentationStyle = . fullScreen
+            present(navigationController, animated: true)
         }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = UIColor(named: "YP Black")
+        addSplashLogo()
+        
+    }
+    
+    private func addSplashLogo() {
+        let splashLogoImageView = UIImageView(image: UIImage(named: "splash_screen_logo"))
+        splashLogoImageView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(splashLogoImageView)
+        splashLogoImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        splashLogoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        
     }
     
     private func switchToTabBarController() {
@@ -61,28 +89,11 @@ final class SplashViewController: UIViewController {
             }
         }
     }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == showAuthSegueIdentifier {
-            guard let navigationController = segue.destination as? UINavigationController,
-                  let vc = navigationController.viewControllers[0] as? AuthViewController
-            else {
-                assertionFailure("Failed to prepare for \(showAuthSegueIdentifier)")
-                return
-            }
-            vc.delegate = self
-        } else {
-            super.prepare(for: segue, sender: sender)
-        }
-    }
 }
 
 extension SplashViewController: AuthViewControllerDelegate {
     func didAuthenticate(_ vc: AuthViewController) {
         vc.dismiss(animated: true)
-        guard let token = tokenStorage.token else {return}
-        
-        fetchProfile(token)
     }
     
 }
