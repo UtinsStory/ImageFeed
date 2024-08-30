@@ -8,7 +8,7 @@
 import Foundation
 
 final class ImagesListService {
-    private let shared = ImagesListService()
+    static let shared = ImagesListService()
     private init() {}
     
     private (set) var photos: [Photo] = []
@@ -21,7 +21,7 @@ final class ImagesListService {
     
     func fetchPhotosNextPage() {
         guard task == nil else { return }
-
+        
         let nextPage = (lastLoadedPage ?? 0) + 1
         
         guard let request = makePhotosRequest(page: nextPage, perPage: 10) else {
@@ -33,35 +33,57 @@ final class ImagesListService {
             guard let self = self else { return }
             
             switch result {
-            case .success(let newPhotos)
-                
+            case .success(let newPhotos):
+                addPhotos(newPhotos: newPhotos)
+                NotificationCenter.default.post(name: ImagesListService.didChangeNotification,
+                                                object: self)
+            case .failure(let error):
+                print("[ImagesListService: fetchPhotosNextPage]: Failed to fetch photos")
             }
+            self.task = nil
+            self.lastLoadedPage = nextPage
         }
+        self.task = task
+        task.resume()
     }
     
     func makePhotosRequest(page: Int, perPage: Int) -> URLRequest? {
-        guard let baseUrl = URL(string: photosURL) else {
-            assertionFailure("[ImagesListService: makePhotosRequest]: Failed to create URL")
-            return nil
-        }
+        guard let baseURL = URL(string: "https://api.unsplash.com") else { return nil }
         guard let token = OAuth2TokenStorage.shared.token else { return nil }
         
-        var urlComponents = URLComponents(url: baseUrl, resolvingAgainstBaseURL: true)
-                
-                let queryItems = [
-                    URLQueryItem(name: "page", value: "\(page)"),
-                    URLQueryItem(name: "per_page", value: "\(perPage)")
-                ]
-        urlComponents?.queryItems = queryItems
-                
-                guard let url = urlComponents?.url else { return nil }
-                
-                var request = URLRequest(url: url)
-                request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-                request.httpMethod = "GET"
-                
-                return request
+        var components = URLComponents(url: baseURL, resolvingAgainstBaseURL: true)
+        components?.path = "/photos"
         
+        let queryItems = [
+            URLQueryItem(name: "page", value: "\(page)"),
+            URLQueryItem(name: "per_page", value: "\(perPage)")
+        ]
+        components?.queryItems = queryItems
+        
+        guard let url = components?.url else { return nil }
+        
+        var request = URLRequest(url: url)
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.httpMethod = "GET"
+        
+        return request
+        
+    }
+    
+    func addPhotos(newPhotos: [PhotoResult]) {
+        let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
+        
+        for photo in newPhotos {
+            let newPhoto = Photo(id: photo.id,
+                                 size: CGSize(width: photo.width, height: photo.height),
+                                 createdAt: dateFormatter.date(from: photo.createdAt),
+                                 welcomeDescription: photo.description,
+                                 thumbImageURL: photo.urls.thumb,
+                                 largeImageURL: photo.urls.full,
+                                 isLiked: photo.likedByUser)
+            photos.append(newPhoto)
+        }
     }
     
 }
