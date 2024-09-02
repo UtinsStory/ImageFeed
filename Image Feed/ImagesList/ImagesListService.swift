@@ -86,6 +86,33 @@ final class ImagesListService {
         }
     }
     
+    func changeLike(photoId: String, 
+                    isLike: Bool,
+                    _ completion: @escaping (Result<Void?, Error>) -> Void) {
+        
+        let baseURL = "https://api.unsplash.com"
+        guard let token = OAuth2TokenStorage.shared.token else {return}
+        guard let url = URL(string: "/photos/\(photoId)/like", relativeTo: Constants.defaultBaseURL) else {return}
+        
+        var request = URLRequest(url: url)
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.httpMethod = isLike ? "POST" : "DELETE"
+        
+        urlSession.data(for: request) { [weak self] (result: Result<Data, Error>) in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success:
+                if let index = self.photos.firstIndex(where: { $0.id == photoId }) {
+                    self.photos[index].isLiked = isLike
+                    completion(.success(nil))
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }.resume()
+    }
+    
 }
 
 struct Photo {
@@ -95,5 +122,5 @@ struct Photo {
     let welcomeDescription: String?
     let thumbImageURL: String
     let largeImageURL: String
-    let isLiked: Bool
+    var isLiked: Bool
 }
