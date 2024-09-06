@@ -37,7 +37,7 @@ final class ImagesListService {
                 addPhotos(newPhotos: newPhotos)
                 NotificationCenter.default.post(name: ImagesListService.didChangeNotification,
                                                 object: self)
-            case .failure(let error):
+            case .failure:
                 print("[ImagesListService: fetchPhotosNextPage]: Failed to fetch photos")
             }
             self.task = nil
@@ -90,13 +90,13 @@ final class ImagesListService {
                     isLike: Bool,
                     _ completion: @escaping (Result<Void?, Error>) -> Void) {
         
-        let baseURL = "https://api.unsplash.com"
+//        let baseURL = "https://api.unsplash.com"
         guard let token = OAuth2TokenStorage.shared.token else {return}
         guard let url = URL(string: "/photos/\(photoId)/like", relativeTo: Constants.defaultBaseURL) else {return}
         
         var request = URLRequest(url: url)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        request.httpMethod = isLike ? "POST" : "DELETE"
+        request.httpMethod = isLike ? "DELETE" : "POST"
         
         urlSession.data(for: request) { [weak self] (result: Result<Data, Error>) in
             guard let self = self else { return }

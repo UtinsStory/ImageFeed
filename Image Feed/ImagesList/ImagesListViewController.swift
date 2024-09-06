@@ -92,10 +92,10 @@ extension ImagesListViewController {
         cell.cellImage.kf.indicatorType = .activity
         cell.cellImage.kf.setImage(with: imageUrl, placeholder: UIImage(named: "feed_placeholder"))
         cell.dateLabel.text = photo.createdAt != nil ? dateFormatter.string(from: photo.createdAt!) : ""
+        
+        cell.setIsLiked(photos[indexPath.item].isLiked)
+        
 
-        let isLiked = indexPath.row % 2 == 0
-        let likeImage = isLiked ? UIImage(named: "like_button_on") : UIImage(named: "like_button_off")
-        cell.likeButton.setImage(likeImage, for: .normal)
     }
     
     func updateTableViewAnimated() {
