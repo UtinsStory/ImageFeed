@@ -77,7 +77,7 @@ final class ImagesListService {
         for photo in newPhotos {
             let newPhoto = Photo(id: photo.id,
                                  size: CGSize(width: photo.width, height: photo.height),
-                                 createdAt: dateFormatter.date(from: photo.createdAt),
+                                 createdAt: dateFormatter.date(from: photo.createdAt ?? ""),
                                  welcomeDescription: photo.description,
                                  thumbImageURL: photo.urls.thumb,
                                  largeImageURL: photo.urls.full,
@@ -98,13 +98,13 @@ final class ImagesListService {
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         request.httpMethod = isLike ? "DELETE" : "POST"
         
-        urlSession.data(for: request) { [weak self] (result: Result<Data, Error>) in
+        urlSession.objectTask(for: request) { [weak self] (result: Result<LikedPhoto, Error>) in
             guard let self = self else { return }
             
             switch result {
-            case .success:
+            case .success(let response):
                 if let index = self.photos.firstIndex(where: { $0.id == photoId }) {
-                    self.photos[index].isLiked = isLike
+                    self.photos[index].isLiked = response.photo.likedByUser
                     completion(.success(nil))
                 }
             case .failure(let error):

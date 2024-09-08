@@ -7,14 +7,16 @@
 
 import Foundation
 
-struct PhotoResult: Decodable {
+struct PhotoResult: Codable {
     let id: String
-    let createdAt: String
-    let updatedAt: String
+    let createdAt: String?
     let width: Int
     let height: Int
-    let likes: Int
-    let likedByUser: Bool
-    let description: String?
     let urls: UrlsResult
+    let description: String?
+    var likedByUser: Bool
+}
+
+struct LikedPhoto: Codable {
+    let photo: PhotoResult
 }

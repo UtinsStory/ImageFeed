@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct UrlsResult: Decodable {
+struct UrlsResult: Codable {
     let raw: String
     let full: String
     let regular: String
