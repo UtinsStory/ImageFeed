@@ -71,8 +71,7 @@ final class ImagesListService {
     }
     
     func addPhotos(newPhotos: [PhotoResult]) {
-        let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
+        let dateFormatter = ISO8601DateFormatter()
         
         for photo in newPhotos {
             let newPhoto = Photo(id: photo.id,
@@ -113,12 +112,18 @@ final class ImagesListService {
         }.resume()
     }
     
+    func cleanImagesList() {
+        photos = []
+        task?.cancel()
+        lastLoadedPage = 1
+    }
+    
 }
 
 struct Photo {
     let id: String
     let size: CGSize
-    let createdAt: Date?
+    var createdAt: Date?
     let welcomeDescription: String?
     let thumbImageURL: String
     let largeImageURL: String

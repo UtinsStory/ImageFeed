@@ -165,6 +165,9 @@ final class ProfileViewController: UIViewController {
     
     @objc
     private func didTapExitButton() {
-        //TODO: - Добавить логику выхода из профиля
+        ProfileLogoutService.shared.logout()
+        if let window = UIApplication.shared.windows.first(where: {$0.isKeyWindow}) {
+            window.rootViewController = SplashViewController()
+        }
     }
 }
