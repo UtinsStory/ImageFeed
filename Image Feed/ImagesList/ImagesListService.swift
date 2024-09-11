@@ -89,7 +89,6 @@ final class ImagesListService {
                     isLike: Bool,
                     _ completion: @escaping (Result<Void?, Error>) -> Void) {
         
-//        let baseURL = "https://api.unsplash.com"
         guard let token = OAuth2TokenStorage.shared.token else {return}
         guard let url = URL(string: "/photos/\(photoId)/like", relativeTo: Constants.defaultBaseURL) else {return}
         

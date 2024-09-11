@@ -140,13 +140,12 @@ extension ImagesListViewController: ImagesListCellDelegate {
         
         UIBlockingProgressHUD.show()
         imagesListService.changeLike(photoId: photo.id, isLike: photo.isLiked) { result in
+            UIBlockingProgressHUD.dismiss()
             switch result {
             case .success:
                 self.photos = self.imagesListService.photos
                 cell.setIsLiked(self.photos[indexPath.row].isLiked)
-                UIBlockingProgressHUD.dismiss()
             case .failure:
-                UIBlockingProgressHUD.dismiss()
                 let alert = UIAlertController(title: "Что-то пошло не так(",
                                               message: "Попробуйте ещё раз позже",
                                               preferredStyle: .alert)
