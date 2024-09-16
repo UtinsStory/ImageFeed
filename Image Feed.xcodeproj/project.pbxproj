@@ -164,10 +164,7 @@
 			children = (
 				BF3786F12C4E5AA9006924A3 /* ProfileViewController.swift */,
 				BF44DD7E2C6A15590057E1DA /* ProfileService.swift */,
-				BF44DD802C6A1EF90057E1DA /* ProfileResult.swift */,
-				BF44DD822C6BCC780057E1DA /* Profile.swift */,
 				BF44DD842C6DE2EA0057E1DA /* ProfileImageService.swift */,
-				BF44DD862C6DE3880057E1DA /* UserResult.swift */,
 				BF44DDAB2C8E24E00057E1DA /* ProfileLogoutService.swift */,
 			);
 			path = Profile;
@@ -209,6 +206,10 @@
 		BF44DD992C807CD90057E1DA /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				BF44DD802C6A1EF90057E1DA /* ProfileResult.swift */,
+				BF44DD822C6BCC780057E1DA /* Profile.swift */,
+				BF44DD862C6DE3880057E1DA /* UserResult.swift */,
+				BF712DD62C5A2D84001CF063 /* OAuthTokenResponseBody.swift */,
 				BF44DD9A2C807DA50057E1DA /* PhotoResult.swift */,
 				BF44DD9C2C807DC00057E1DA /* UrlsResult.swift */,
 			);
@@ -227,7 +228,6 @@
 			isa = PBXGroup;
 			children = (
 				BF712DD42C58F937001CF063 /* OAuth2Service.swift */,
-				BF712DD62C5A2D84001CF063 /* OAuthTokenResponseBody.swift */,
 				BF712DD82C5A2F95001CF063 /* OAuth2TokenStorage.swift */,
 			);
 			path = OAuth2Service;
