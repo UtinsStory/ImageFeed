@@ -165,6 +165,18 @@ final class ProfileViewController: UIViewController {
     
     @objc
     private func didTapExitButton() {
-        //TODO: - Добавить логику выхода из профиля
+        let alert = UIAlertController(title: "Уверены, что хотите выйти?", message: "Оставайтесь!", preferredStyle: .alert)
+        let logOutAction = UIAlertAction(title: "Да", style: .default) { _ in
+            ProfileLogoutService.shared.logout()
+            if let window = UIApplication.shared.windows.first(where: {$0.isKeyWindow}) {
+                window.rootViewController = SplashViewController()
+            }
+        }
+        let cancelAction = UIAlertAction(title: "Нет", style: .default)
+        
+        alert.addAction(logOutAction)
+        alert.addAction(cancelAction)
+        alert.preferredAction = cancelAction
+        present(alert, animated: true)
     }
 }
