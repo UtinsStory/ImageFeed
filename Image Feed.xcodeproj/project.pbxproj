@@ -40,6 +40,7 @@
 		BF712DD92C5A2F95001CF063 /* OAuth2TokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF712DD82C5A2F95001CF063 /* OAuth2TokenStorage.swift */; };
 		BF712DDB2C5A315D001CF063 /* URLSession+data.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF712DDA2C5A315D001CF063 /* URLSession+data.swift */; };
 		BF712DDD2C5A37EF001CF063 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF712DDC2C5A37EF001CF063 /* SplashViewController.swift */; };
+		BFC184072C9AAE2A000FD8F2 /* WebViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC184062C9AAE1D000FD8F2 /* WebViewPresenter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,6 +87,7 @@
 		BF712DD82C5A2F95001CF063 /* OAuth2TokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2TokenStorage.swift; sourceTree = "<group>"; };
 		BF712DDA2C5A315D001CF063 /* URLSession+data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSession+data.swift"; sourceTree = "<group>"; };
 		BF712DDC2C5A37EF001CF063 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
+		BFC184062C9AAE1D000FD8F2 /* WebViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewPresenter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -181,8 +183,9 @@
 		BF3BAE2B2C5663BD002EBD2E /* Auth */ = {
 			isa = PBXGroup;
 			children = (
-				BF3BAE2C2C5663EB002EBD2E /* AuthViewController.swift */,
+				BFC184062C9AAE1D000FD8F2 /* WebViewPresenter.swift */,
 				BF712DD02C5669AA001CF063 /* WebViewViewController.swift */,
+				BF3BAE2C2C5663EB002EBD2E /* AuthViewController.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -374,6 +377,7 @@
 				BF3BAE2A2C566346002EBD2E /* Constants.swift in Sources */,
 				BF3786F52C4FB04C006924A3 /* SingleImageViewController.swift in Sources */,
 				BF712DD12C5669AA001CF063 /* WebViewViewController.swift in Sources */,
+				BFC184072C9AAE2A000FD8F2 /* WebViewPresenter.swift in Sources */,
 				BF712DD92C5A2F95001CF063 /* OAuth2TokenStorage.swift in Sources */,
 				BF44DD832C6BCC780057E1DA /* Profile.swift in Sources */,
 				BF44DD852C6DE2EA0057E1DA /* ProfileImageService.swift in Sources */,
