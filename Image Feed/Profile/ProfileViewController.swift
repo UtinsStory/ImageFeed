@@ -40,14 +40,11 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "YP Black")
         
+        presenter = ProfilePresenter()
+        presenter?.view = self
+        
         presenter?.viewDidLoad()
-        
-//        addProfilePic()
-//        addNameLabel()
-//        addLoginLabel()
-//        addDescriptionLabel()
-//        addExitButton()
-        
+                
         updateProfileDetails()
         
         profileImageServiceObserver = NotificationCenter.default.addObserver(
@@ -177,23 +174,8 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
         present(alert, animated: true)
     }
     
-    
     @objc
     private func didTapExitButton() {
-        //        let alert = UIAlertController(title: "Уверены, что хотите выйти?", message: "Оставайтесь!", preferredStyle: .alert)
-        //        let logOutAction = UIAlertAction(title: "Да", style: .default) { _ in
-        //            ProfileLogoutService.shared.logout()
-        //            if let window = UIApplication.shared.windows.first(where: {$0.isKeyWindow}) {
-        //                window.rootViewController = SplashViewController()
-        //            }
-        //        }
-        //        let cancelAction = UIAlertAction(title: "Нет", style: .default)
-        //        
-        //        alert.addAction(logOutAction)
-        //        alert.addAction(cancelAction)
-        //        alert.preferredAction = cancelAction
-        //        present(alert, animated: true)
-        //    }
         presenter?.logout()
     }
 }

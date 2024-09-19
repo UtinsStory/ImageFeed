@@ -17,7 +17,7 @@ public protocol ProfilePresenterProtocol {
 }
 
 final class ProfilePresenter: ProfilePresenterProtocol {
-    var view: ProfileViewControllerProtocol?
+    weak var view: ProfileViewControllerProtocol?
     
     func viewDidLoad() {
         
