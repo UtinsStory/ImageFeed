@@ -8,10 +8,22 @@
 import UIKit
 import Kingfisher
 
-final class ProfileViewController: UIViewController {
+public protocol ProfileViewControllerProtocol: AnyObject {
+    var presenter: ProfilePresenterProtocol? { get set }
+    func addProfilePic()
+    func addExitButton()
+    func addNameLabel()
+    func addLoginLabel()
+    func addDescriptionLabel()
+    func updateAvatar()
+    func showAlert(alert: UIAlertController)
+}
+
+final class ProfileViewController: UIViewController & ProfileViewControllerProtocol {
     
     //MARK: - PROPERTIES
     
+    var presenter: ProfilePresenterProtocol?
     private var profilePicImageView: UIImageView?
     private var exitButton: UIButton?
     private var nameLabel: UILabel?
@@ -28,14 +40,15 @@ final class ProfileViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "YP Black")
         
-        addProfilePic()
-        addExitButton()
-        addNameLabel()
-        addLoginLabel()
-        addDescriptionLabel()
+        presenter?.viewDidLoad()
         
-        guard let profile = profileService.profile else { return }
-        updateProfileDetails(profile: profile)
+//        addProfilePic()
+//        addNameLabel()
+//        addLoginLabel()
+//        addDescriptionLabel()
+//        addExitButton()
+        
+        updateProfileDetails()
         
         profileImageServiceObserver = NotificationCenter.default.addObserver(
             forName: ProfileImageService.didChangeNotification,
@@ -140,17 +153,15 @@ final class ProfileViewController: UIViewController {
         self.descriptionLabel = descriptionLabel
     }
     
-    private func updateProfileDetails(profile: Profile) {
+    private func updateProfileDetails() {
+        guard let profile = presenter?.getProfile() else { return }
         nameLabel?.text = profile.name
         loginLabel?.text = profile.loginname
         descriptionLabel?.text = profile.bio
     }
     
-    private func updateAvatar() {
-        guard
-            let profileImageURL = ProfileImageService.shared.avatarURL,
-            let url = URL(string: profileImageURL)
-        else { return }
+    func updateAvatar() {
+        let url = presenter?.getAvatarUrl()
         
         let procesoor = RoundCornerImageProcessor(cornerRadius: 35)
                     |> BlendImageProcessor(blendMode: .normal, backgroundColor: UIColor(named: "YP Black"))
@@ -162,21 +173,27 @@ final class ProfileViewController: UIViewController {
         )
     }
     
+    func showAlert(alert: UIAlertController) {
+        present(alert, animated: true)
+    }
+    
     
     @objc
     private func didTapExitButton() {
-        let alert = UIAlertController(title: "Уверены, что хотите выйти?", message: "Оставайтесь!", preferredStyle: .alert)
-        let logOutAction = UIAlertAction(title: "Да", style: .default) { _ in
-            ProfileLogoutService.shared.logout()
-            if let window = UIApplication.shared.windows.first(where: {$0.isKeyWindow}) {
-                window.rootViewController = SplashViewController()
-            }
-        }
-        let cancelAction = UIAlertAction(title: "Нет", style: .default)
-        
-        alert.addAction(logOutAction)
-        alert.addAction(cancelAction)
-        alert.preferredAction = cancelAction
-        present(alert, animated: true)
+        //        let alert = UIAlertController(title: "Уверены, что хотите выйти?", message: "Оставайтесь!", preferredStyle: .alert)
+        //        let logOutAction = UIAlertAction(title: "Да", style: .default) { _ in
+        //            ProfileLogoutService.shared.logout()
+        //            if let window = UIApplication.shared.windows.first(where: {$0.isKeyWindow}) {
+        //                window.rootViewController = SplashViewController()
+        //            }
+        //        }
+        //        let cancelAction = UIAlertAction(title: "Нет", style: .default)
+        //        
+        //        alert.addAction(logOutAction)
+        //        alert.addAction(cancelAction)
+        //        alert.preferredAction = cancelAction
+        //        present(alert, animated: true)
+        //    }
+        presenter?.logout()
     }
 }
