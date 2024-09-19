@@ -42,6 +42,7 @@
 		BFC184072C9AAE2A000FD8F2 /* WebViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC184062C9AAE1D000FD8F2 /* WebViewPresenter.swift */; };
 		BFC184092C9ABAB8000FD8F2 /* AuthHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC184082C9ABAAF000FD8F2 /* AuthHelper.swift */; };
 		BFC184202C9AC76E000FD8F2 /* ProfilePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC1841F2C9AC767000FD8F2 /* ProfilePresenter.swift */; };
+		BFC184222C9C04C4000FD8F2 /* ImagesListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC184212C9C04C3000FD8F2 /* ImagesListPresenter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,6 +91,7 @@
 		BFC184082C9ABAAF000FD8F2 /* AuthHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthHelper.swift; sourceTree = "<group>"; };
 		BFC1840E2C9ABFC5000FD8F2 /* Image FeedTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Image FeedTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFC1841F2C9AC767000FD8F2 /* ProfilePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePresenter.swift; sourceTree = "<group>"; };
+		BFC184212C9C04C3000FD8F2 /* ImagesListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListPresenter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -161,6 +163,7 @@
 			isa = PBXGroup;
 			children = (
 				7D3DFB1328DDF696005A13F3 /* ImagesListCell.swift */,
+				BFC184212C9C04C3000FD8F2 /* ImagesListPresenter.swift */,
 				7D3DFB1428DDF696005A13F3 /* ImagesListViewController.swift */,
 				BF44DD972C807A1C0057E1DA /* ImagesListService.swift */,
 			);
@@ -369,6 +372,7 @@
 				BF712DD32C58EB12001CF063 /* WebViewViewControllerDelegate.swift in Sources */,
 				BF44DD7D2C6A134C0057E1DA /* UIBlockingProgressHUD.swift in Sources */,
 				BFC184092C9ABAB8000FD8F2 /* AuthHelper.swift in Sources */,
+				BFC184222C9C04C4000FD8F2 /* ImagesListPresenter.swift in Sources */,
 				BF712DD72C5A2D84001CF063 /* OAuthTokenResponseBody.swift in Sources */,
 				BF44DD872C6DE3880057E1DA /* UserResult.swift in Sources */,
 				7D9CFA4528DDEE7F00D971A7 /* SceneDelegate.swift in Sources */,

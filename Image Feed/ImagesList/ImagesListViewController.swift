@@ -2,16 +2,19 @@ import UIKit
 import Kingfisher
 import ProgressHUD
 
-final class ImagesListViewController: UIViewController {
+protocol ImagesListViewControllerProtocol: AnyObject {
+    var presenter: ImagesListPresenterProtocol? { get set }
+    func updateTableViewAnimated(_ indexPaths: [IndexPath])
+    func showAlert(alert: UIAlertController)
+}
+
+final class ImagesListViewController: UIViewController & ImagesListViewControllerProtocol {
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
+    var presenter: ImagesListPresenterProtocol?
     
     @IBOutlet private var tableView: UITableView!
     
     private var imagesListService = ImagesListService.shared
-    
-    private var photos: [Photo] = []
-
-    private let photosName: [String] = Array(0..<20).map{ "\($0)" }
     
     private var imagesListServiceObserver: NSObjectProtocol?
     
@@ -25,6 +28,9 @@ final class ImagesListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        presenter = ImagesListPresenter()
+        presenter?.view = self
+        
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
         
         imagesListServiceObserver = NotificationCenter.default.addObserver(
@@ -33,7 +39,7 @@ final class ImagesListViewController: UIViewController {
             queue: .main
         ) { [weak self] _ in
             guard let self = self else {return}
-            self.updateTableViewAnimated()
+            self.presenter?.didUpdatePhotos()
         }
         imagesListService.fetchPhotosNextPage()
     }
@@ -47,10 +53,14 @@ final class ImagesListViewController: UIViewController {
                 assertionFailure("Invalid segue destination")
                 return
             }
-            viewController.photo = photos[indexPath.row]
+            viewController.photo = presenter?.photos[indexPath.row]
         } else {
             super.prepare(for: segue, sender: sender)
         }
+    }
+    
+    func showAlert(alert: UIAlertController) {
+        present(alert, animated: true)
     }
     
     func tableView(
@@ -66,52 +76,42 @@ final class ImagesListViewController: UIViewController {
 
 extension ImagesListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return photos.count
+        return presenter?.photos.count ?? 0
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ImagesListCell.reuseIdentifier, for: indexPath)
-
+        
         guard let imageListCell = cell as? ImagesListCell else {
             return UITableViewCell()
         }
         
         imageListCell.delegate = self
-
+        
         configCell(for: imageListCell, with: indexPath)
-
+        
         return imageListCell
     }
 }
 
 extension ImagesListViewController {
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
-        let photo = photos[indexPath.row]
-        guard let imageUrl = URL(string: photo.thumbImageURL) else { return }
-
+        guard
+            let photo = presenter?.photos[indexPath.row],
+            let imageUrl = URL(string: photo.thumbImageURL) else { return }
+        
         cell.cellImage.kf.indicatorType = .activity
         cell.cellImage.kf.setImage(with: imageUrl, placeholder: UIImage(named: "feed_placeholder"))
         cell.dateLabel.text = self.dateFormatter.string(for: photo.createdAt)
         
-        cell.setIsLiked(photos[indexPath.item].isLiked)
+        cell.setIsLiked(photo.isLiked)
         
-
     }
     
-    func updateTableViewAnimated() {
-        let oldCount = photos.count
-        let newCount = imagesListService.photos.count
-        
-        photos = imagesListService.photos
-        
-        if oldCount != newCount {
-            tableView.performBatchUpdates {
-                let indexPaths = (oldCount..<newCount).map { i in
-                    IndexPath(row: i, section: 0)
-                }
-                tableView.insertRows(at: indexPaths, with: .automatic)
-            } completion: { _ in }
-        }
+    func updateTableViewAnimated(_ indexPaths: [IndexPath]) {
+        tableView.performBatchUpdates {
+            tableView.insertRows(at: indexPaths, with: .automatic)
+        } completion: { _ in }
     }
 }
 
@@ -120,39 +120,17 @@ extension ImagesListViewController: UITableViewDelegate {
         performSegue(withIdentifier: showSingleImageSegueIdentifier, sender: indexPath)
     }
     
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let photo = photos[indexPath.row]
-        
-        let imageInsets = UIEdgeInsets(top: 4, left: 16, bottom: 4, right: 16)
-        let imageViewWidth = tableView.bounds.width - imageInsets.left - imageInsets.right
-        let imageWidth = photo.size.width
-        let scale = imageViewWidth / imageWidth
-        let cellHeight = photo.size.height * scale + imageInsets.top + imageInsets.bottom
-        
-        return cellHeight
+        guard let height = presenter?.getCellHeight(indexPath: indexPath, tableView: tableView) else {
+            return 0
+        }
+        return height
     }
 }
 
 extension ImagesListViewController: ImagesListCellDelegate {
     func imageListCellDidTapLike(_ cell: ImagesListCell) {
-        guard let indexPath = tableView.indexPath(for: cell) else { return }
-        let photo = photos[indexPath.row]
-        
-        UIBlockingProgressHUD.show()
-        imagesListService.changeLike(photoId: photo.id, isLike: photo.isLiked) { result in
-            UIBlockingProgressHUD.dismiss()
-            switch result {
-            case .success:
-                self.photos = self.imagesListService.photos
-                cell.setIsLiked(self.photos[indexPath.row].isLiked)
-            case .failure:
-                let alert = UIAlertController(title: "Что-то пошло не так(",
-                                              message: "Попробуйте ещё раз позже",
-                                              preferredStyle: .alert)
-                let action = UIAlertAction(title: "OK", style: .default)
-                alert.addAction(action)
-                self.present(alert, animated: true)
-            }
-        }
+        presenter?.didTapLike(cell, tableView: tableView)
     }
 }

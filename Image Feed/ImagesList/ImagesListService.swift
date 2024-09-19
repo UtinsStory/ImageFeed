@@ -119,12 +119,3 @@ final class ImagesListService {
     
 }
 
-struct Photo {
-    let id: String
-    let size: CGSize
-    var createdAt: Date?
-    let welcomeDescription: String?
-    let thumbImageURL: String
-    let largeImageURL: String
-    var isLiked: Bool
-}
