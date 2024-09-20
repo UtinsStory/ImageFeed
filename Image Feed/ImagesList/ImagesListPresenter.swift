@@ -9,7 +9,9 @@ import UIKit
 
 protocol ImagesListPresenterProtocol: AnyObject {
     var view: ImagesListViewControllerProtocol? { get set }
+    var imagesListService: ImagesListService { get }
     var photos: [Photo] { get }
+    func viewDidLoad()
     func getCellHeight(indexPath: IndexPath, tableView: UITableView) -> CGFloat
     func didTapLike(_ cell: ImagesListCell, tableView: UITableView)
     func didUpdatePhotos()
@@ -18,7 +20,20 @@ protocol ImagesListPresenterProtocol: AnyObject {
 final class ImagesListPresenter: ImagesListPresenterProtocol {
     weak var view: ImagesListViewControllerProtocol?
     var photos: [Photo] = []
+    private var imagesListServiceObserver: NSObjectProtocol?
     let imagesListService = ImagesListService.shared
+    
+    func viewDidLoad() {
+        imagesListServiceObserver = NotificationCenter.default.addObserver(
+            forName: ImagesListService.didChangeNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            guard let self = self else {return}
+            self.didUpdatePhotos()
+        }
+        imagesListService.fetchPhotosNextPage()
+    }
     
     func getCellHeight(indexPath: IndexPath, tableView: UITableView) -> CGFloat {
         let photo = imagesListService.photos[indexPath.row]

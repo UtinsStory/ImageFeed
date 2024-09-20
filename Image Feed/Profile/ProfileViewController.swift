@@ -40,8 +40,8 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "YP Black")
         
-        presenter = ProfilePresenter()
-        presenter?.view = self
+//        presenter = ProfilePresenter()
+//        presenter?.view = self
         
         presenter?.viewDidLoad()
                 
@@ -58,6 +58,11 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
     }
     
     //MARK: - METHODS
+    
+    func configure(_ presenter: ProfilePresenterProtocol) {
+        self.presenter = presenter
+        self.presenter?.view = self
+    }
     
     func addProfilePic() {
         let profilePicImageView = UIImageView(image: UIImage(named: "profile_pic"))

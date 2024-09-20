@@ -16,8 +16,6 @@ final class ImagesListViewController: UIViewController & ImagesListViewControlle
     
     private var imagesListService = ImagesListService.shared
     
-    private var imagesListServiceObserver: NSObjectProtocol?
-    
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
@@ -28,20 +26,13 @@ final class ImagesListViewController: UIViewController & ImagesListViewControlle
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        presenter = ImagesListPresenter()
-        presenter?.view = self
+//        presenter = ImagesListPresenter()
+//        presenter?.view = self
         
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
         
-        imagesListServiceObserver = NotificationCenter.default.addObserver(
-            forName: ImagesListService.didChangeNotification,
-            object: nil,
-            queue: .main
-        ) { [weak self] _ in
-            guard let self = self else {return}
-            self.presenter?.didUpdatePhotos()
-        }
-        imagesListService.fetchPhotosNextPage()
+        presenter?.viewDidLoad()
+
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -58,6 +49,11 @@ final class ImagesListViewController: UIViewController & ImagesListViewControlle
             super.prepare(for: segue, sender: sender)
         }
     }
+    
+    func configure(_ presenter: ImagesListPresenterProtocol) {
+            self.presenter = presenter
+            self.presenter?.view = self
+        }
     
     func showAlert(alert: UIAlertController) {
         present(alert, animated: true)
