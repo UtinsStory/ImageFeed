@@ -50,7 +50,7 @@ final class AuthViewController: UIViewController,
     //MARK: IB Actions
     
     @IBAction func didTapLoginButton() {
-        //TODO: Реализовать функционал выхода из профиля
+        
     }
     
     //MARK: - Methods
