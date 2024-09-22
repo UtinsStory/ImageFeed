@@ -79,6 +79,7 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
     
     func addExitButton() {
         let exitButton = UIButton.systemButton(with: UIImage(named: "exit_button")!, target: self, action: #selector(Self.didTapExitButton))
+        exitButton.accessibilityIdentifier = "logoutButton"
         exitButton.tintColor = UIColor(red: 0.96, green: 0.42, blue: 0.42, alpha: 1.00)
         exitButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(exitButton)

@@ -41,6 +41,7 @@
                                                 </imageView>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sdE-8c-JJO" userLabel="Like Button">
                                                     <rect key="frame" x="354" y="4" width="44" height="44"/>
+                                                    <accessibility key="accessibilityConfiguration" identifier="likeButton"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="44" id="TdL-nv-CnJ"/>
                                                         <constraint firstAttribute="width" constant="44" id="ldh-lZ-Nav"/>
@@ -258,7 +259,7 @@
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="wet-xH-gSB"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <accessibility key="accessibilityConfiguration" identifier="UnsplashWebView">
+                        <accessibility key="accessibilityConfiguration">
                             <bool key="isElement" value="YES"/>
                         </accessibility>
                         <constraints>
