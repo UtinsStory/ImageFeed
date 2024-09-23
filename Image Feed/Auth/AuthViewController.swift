@@ -49,7 +49,7 @@ final class AuthViewController: UIViewController,
     
     //MARK: IB Actions
     
-    @IBAction func didTapLoginButton() {
+    @IBAction private func didTapLoginButton() {
         
     }
     

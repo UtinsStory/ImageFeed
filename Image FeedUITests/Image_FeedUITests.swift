@@ -50,9 +50,9 @@ class Image_FeedUITests: XCTestCase {
     }
     
     func testFeed() throws {
-        sleep(10)
+        sleep(5)
         let tablesQuery = app.tables
-        sleep(10)
+        sleep(5)
         let cell = tablesQuery.children(matching: .cell).element(boundBy: 0)
         cell.swipeUp()
         
@@ -64,11 +64,11 @@ class Image_FeedUITests: XCTestCase {
         sleep(3)
         cellToLike.buttons["likeButton"].tap()
         
-        sleep(10)
+        sleep(5)
         
         cellToLike.tap()
         
-        sleep(10)
+        sleep(5)
         
         let image = app.scrollViews.images.element(boundBy: 0)
         image.pinch(withScale: 3, velocity: 1)
