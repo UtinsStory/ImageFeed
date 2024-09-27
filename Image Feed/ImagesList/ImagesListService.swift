@@ -11,7 +11,7 @@ final class ImagesListService {
     static let shared = ImagesListService()
     private init() {}
     
-    private (set) var photos: [Photo] = []
+    private(set) var photos: [Photo] = []
     private var lastLoadedPage: Int?
     private var urlSession = URLSession.shared
     private var task: URLSessionTask?
@@ -119,12 +119,3 @@ final class ImagesListService {
     
 }
 
-struct Photo {
-    let id: String
-    let size: CGSize
-    var createdAt: Date?
-    let welcomeDescription: String?
-    let thumbImageURL: String
-    let largeImageURL: String
-    var isLiked: Bool
-}
